@@ -1,5 +1,5 @@
 import pygame
-
+from random import randint
 
 SCREEN_WIDTH, SCREEN_HEIGHT = 640, 480
 GRID_SIZE = 20
@@ -37,7 +37,6 @@ pygame.display.set_caption('Змейка')
 clock = pygame.time.Clock()
 
 
-
 class GameObject:
     def __init__(self, position=(0, 0), body_color=(0, 0, 0)):
         self.body_color = body_color
@@ -62,6 +61,7 @@ class Snake(GameObject):
         self.last = None
 
     def move(self):
+        """Обновляет позицию змейки."""
         if self.next_direction:
             self.direction = self.next_direction
             self.next_direction = None 
@@ -76,6 +76,7 @@ class Snake(GameObject):
         self.position = self.positions[0]
     
     def draw(self):
+        """Отрисовывает змейку на экране."""
         for position in self.positions:
             rect = pygame.Rect(position, (GRID_SIZE, GRID_SIZE))
             pygame.draw.rect(screen, self.body_color, rect)
@@ -91,18 +92,20 @@ class Apple(GameObject):
         super().__init__(self.random_position(), APPLE_COLOR)
 
     def random_position(self):
+        """Генирирует случайную позицию для яблока."""
         x = randint(0, GRID_WIDTH - 1) * GRID_SIZE    
         y = randint(0, GRID_HEIGHT - 1) * GRID_SIZE
         return (x,y)
     
     def draw(self):
+        """Отрисовывает яблоко на экране."""
         rect = pygame.Rect(self.position, (GRID_SIZE, GRID_SIZE))
         pygame.draw.rect(screen, self.body_color, rect)
         pygame.draw.rect(screen, BORDER_COLOR, rect, 1)
 
 
 def main():
-    
+    """Основная функция игры."""
     pygame.init()
     
     snake = Snake()
